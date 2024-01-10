@@ -1,6 +1,16 @@
 <script lang="ts" setup>
 import { Gender, Length, names, Popularity } from "~/data";
 
+interface OptionState {
+  title: string;
+  category: keyof {
+    gender: Gender;
+    popularity: Popularity;
+    length: Length;
+  };
+  buttons: Gender[] | Popularity[] | Length[];
+}
+
 interface OptionsState {
   gender: Gender;
   popularity: Popularity;
@@ -27,7 +37,7 @@ const computeSelectedNames = () => {
 
 const selectedNames = ref<string[]>([]);
 
-const optionsArray = [
+const optionsArray: OptionState[] = [
   {
     title: "1) Choose a gender",
     category: "gender",
@@ -61,10 +71,12 @@ const optionsArray = [
     </div>
 
     <div class="cards">
-      <div v-for="name in selectedNames" :key="name" class="cards-box">
-        {{ name }}
-        <p>×</p>
-      </div>
+      <card-name
+        class="cards-box"
+        v-for="name in selectedNames"
+        :key="name"
+        :name="name"
+      />
     </div>
   </div>
 </template>
@@ -108,23 +120,5 @@ h1 {
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   margin-top: 3rem;
-}
-
-.cards-box {
-  position: relative;
-  background-color: rgb(27, 61, 138);
-  color: white;
-  border-radius: 1rem;
-  padding: 1rem;
-  margin-right: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.cards-box p {
-  position: absolute;
-  top: -30%;
-  left: 92.5%;
-  cursor: pointer;
-  color: rgba(255, 255, 255, 0.178);
 }
 </style>
