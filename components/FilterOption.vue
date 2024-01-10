@@ -4,7 +4,11 @@ import { Gender, Length, Popularity } from "~/data";
 interface OptionProps {
   option: {
     title: string;
-    category: string;
+    category: keyof {
+      gender: Gender;
+      popularity: Popularity;
+      length: Length;
+    };
     buttons: Gender[] | Popularity[] | Length[];
   };
   options: {
@@ -25,7 +29,10 @@ const props = defineProps<OptionProps>();
         v-for="value in option.buttons"
         :key="value"
         :class="options[option.category] === value && 'active'"
-        @click="options[option.category] = value"
+        @click="
+          // @ts-ignore
+          options[option.category] = value
+        "
       >
         {{ value }}
       </button>
