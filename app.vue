@@ -37,6 +37,13 @@ const computeSelectedNames = () => {
 
 const selectedNames = ref<string[]>([]);
 
+const removeName = (index: number) => {
+  const filteredNames = [...selectedNames.value];
+  filteredNames.splice(index, 1);
+
+  selectedNames.value = filteredNames;
+};
+
 const optionsArray: OptionState[] = [
   {
     title: "1) Choose a gender",
@@ -73,9 +80,10 @@ const optionsArray: OptionState[] = [
     <div class="cards">
       <card-name
         class="cards-box"
-        v-for="name in selectedNames"
+        v-for="(name, index) in selectedNames"
         :key="name"
         :name="name"
+        @remove="() => removeName(index)"
       />
     </div>
   </div>
